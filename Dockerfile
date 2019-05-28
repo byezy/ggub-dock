@@ -7,7 +7,7 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 #bzip2 ca-certificates curl git tar tini wget
 
 RUN conda update conda && conda config --append channels conda-forge && \
-    conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipywidgets beakerx tk nodejs && \
+    /bin/sh conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipywidgets beakerx tk nodejs && \
     conda update --all
     #pip install git+https://github.com/pyjs/pyjs.git#egg=pyjs && conda update --all
     
