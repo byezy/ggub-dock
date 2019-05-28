@@ -2,7 +2,6 @@ FROM frolvlad/alpine-miniconda3:latest
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
-#RUN apk add bash bzip2 ca-certificates curl git grep sed tini wget
 RUN apk add bash git tar bzip2 ca-certificates tini && update-ca-certificates
 
 RUN conda update conda && conda config --append channels conda-forge && \
@@ -25,20 +24,20 @@ EXPOSE 8888
 
 # get sample Armidale spatial data
 
-RUN wget --no-check-certificate -O sampledata.tar.gz https://github.com/NSW-OEH-EMS-KST/grid-garage-sample-data/archive/GridGarage_SampleData_v1.0.2.tar.gz
-RUN tar -xzf sampledata.tar.gz && rm sampledata.tar.gz
+RUN wget --no-check-certificate -O sampledata.tar.gz https://github.com/NSW-OEH-EMS-KST/grid-garage-sample-data/archive/GridGarage_SampleData_v1.0.2.tar.gz && \
+    tar -xzf sampledata.tar.gz && rm sampledata.tar.gz
 
 # get sample MCASS spatial data
 
-RUN wget --no-check-certificate -O sampledata.tar.gz https://github.com/byezy/mcassexample/archive/v1.0.tar.gz
-RUN tar -xzf sampledata.tar.gz && rm sampledata.tar.gz
+RUN wget --no-check-certificate -O sampledata.tar.gz https://github.com/byezy/mcassexample/archive/v1.0.tar.gz && \
+    tar -xzf sampledata.tar.gz && rm sampledata.tar.gz
 
 # get git code source to ggubu
 
-RUN wget --no-check-certificate -O ggub.tar.gz https://github.com/byezy/ggub/archive/v16-dev.tar.gz
-RUN tar -xzf ggub.tar.gz && rm ggub.tar.gz
+RUN wget --no-check-certificate -O ggub.tar.gz https://github.com/byezy/ggub/archive/v16-dev.tar.gz && \
+    tar -xzf ggub.tar.gz && rm ggub.tar.gz
 
 # Run Jupyter notebook
 
-ENTRYPOINT ["/usr/bin/tini", "--"]
+ENTRYPOINT ["/tini", "--"]
 CMD ["jupyter", "lab", "--notebook-dir=/home/ggubu/", "--ip='0.0.0.0'", "--port=8888", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
