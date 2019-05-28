@@ -3,15 +3,12 @@ FROM frolvlad/alpine-miniconda3:latest
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 #RUN apk add bash bzip2 ca-certificates curl git grep sed tini wget
-RUN apk add bash git tar
-#bzip2 ca-certificates curl git tar tini wget
+RUN apk add bash git tar bzip2 ca-certificates tini && update-ca-certificates
 
-RUN conda update conda && conda config --append channels conda-forge
-RUN conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipywidgets beakerx tk nodejs
-RUN conda update --all
-    #pip install git+https://github.com/pyjs/pyjs.git#egg=pyjs && conda update --all
-    
-RUN conda config --env --add pinned_packages 'openjdk>8.0.121' && \
+RUN conda update conda && conda config --append channels conda-forge && \
+    RUN conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipywidgets beakerx tk nodejs && \
+    RUN conda update --all && \
+    conda config --env --add pinned_packages 'openjdk>8.0.121' && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
     jupyter labextension install beakerx-jupyterlab && \
     jupyter labextension install @jupyterlab/geojson-extension && \
@@ -28,17 +25,17 @@ EXPOSE 8888
 
 # get sample Armidale spatial data
 
-RUN wget --no-check-certificate --content-disposition -O sampledata.tar.gz https://github.com/NSW-OEH-EMS-KST/grid-garage-sample-data/archive/GridGarage_SampleData_v1.0.2.tar.gz
+RUN wget --no-check-certificate -O sampledata.tar.gz https://github.com/NSW-OEH-EMS-KST/grid-garage-sample-data/archive/GridGarage_SampleData_v1.0.2.tar.gz
 RUN tar -xzf sampledata.tar.gz && rm sampledata.tar.gz
 
 # get sample MCASS spatial data
 
-RUN wget --no-check-certificate --content-disposition -O sampledata.tar.gz https://github.com/byezy/mcassexample/archive/v1.0.tar.gz
+RUN wget --no-check-certificate -O sampledata.tar.gz https://github.com/byezy/mcassexample/archive/v1.0.tar.gz
 RUN tar -xzf sampledata.tar.gz && rm sampledata.tar.gz
 
 # get git code source to ggubu
 
-RUN wget --no-check-certificate --content-disposition -O ggub.tar.gz https://github.com/byezy/ggub/archive/v16-dev.tar.gz
+RUN wget --no-check-certificate -O ggub.tar.gz https://github.com/byezy/ggub/archive/v16-dev.tar.gz
 RUN tar -xzf ggub.tar.gz && rm ggub.tar.gz
 
 # Run Jupyter notebook
