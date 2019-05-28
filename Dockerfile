@@ -41,4 +41,4 @@ EXPOSE 8888
 
 # Run Jupyter notebook
 
-CMD ["jupyter", "lab", "--ip", "0.0.0.0"]
+CMD ["jupyter", "lab", "--ip", "0.0.0.0", "--allow-root"]
