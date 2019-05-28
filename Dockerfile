@@ -40,7 +40,7 @@ WORKDIR ~/work
 EXPOSE 8888
 
 # add user
-RUN useradd -ms /bin/bash gguser
+RUN adduser -D -g '' gguser
 USER newuser
 WORKDIR /home/gguser
 
