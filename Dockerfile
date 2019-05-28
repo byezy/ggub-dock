@@ -41,4 +41,4 @@ RUN wget --no-check-certificate -O ggub.tar.gz https://github.com/byezy/ggub/arc
 
 #ENTRYPOINT ["/tini", "--"]
 #CMD ["jupyter", "lab", "--notebook-dir=/home/ggubu/", "--ip='0.0.0.0'", "--port=8888", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
-CMD ["jupyter", "lab"]
+CMD ["jupyter", "lab", "--allow-root"]
