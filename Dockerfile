@@ -6,8 +6,8 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 RUN apk add bash git tar bzip2 ca-certificates tini && update-ca-certificates
 
 RUN conda update conda && conda config --append channels conda-forge && \
-    RUN conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipywidgets beakerx tk nodejs && \
-    RUN conda update --all && \
+    conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipywidgets beakerx tk nodejs && \
+    conda update --all && \
     conda config --env --add pinned_packages 'openjdk>8.0.121' && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
     jupyter labextension install beakerx-jupyterlab && \
