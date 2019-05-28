@@ -15,10 +15,11 @@ RUN conda update conda && conda config --append channels conda-forge && \
     
 RUN mkdir ~/work
 RUN jupyter notebook --generate-config --allow-root
-RUN echo "c.NotebookApp.password = u'sha1:6a3f528eec40:6e896b6e4828f525a6e20e5411cd1c8075d68619'" >> /home/ggubu/.jupyter/jupyter_notebook_config.py
+#RUN echo "c.NotebookApp.password = u'sha1:6a3f528eec40:6e896b6e4828f525a6e20e5411cd1c8075d68619'" >> /home/ggubu/.jupyter/jupyter_notebook_config.py
 WORKDIR ~/work
 
-# Jupyter listens on port 8888
+# Jupyy
+ter listens on port 8888
 
 EXPOSE 8888
 
