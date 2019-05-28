@@ -39,6 +39,11 @@ WORKDIR ~/work
 
 EXPOSE 8888
 
+# add user
+RUN useradd -ms /bin/bash gguser
+USER newuser
+WORKDIR /home/gguser
+
 # Run Jupyter notebook
 
 CMD ["jupyter", "lab", "--ip", "0.0.0.0", "--allow-root"]
