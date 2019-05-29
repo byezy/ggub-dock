@@ -1,8 +1,9 @@
-FROM frolvlad/alpine-miniconda3:latest
+#FROM frolvlad/alpine-miniconda3:latest
+FROM jupyterhub/jupyterhub:latest
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
-RUN apk add bash git tar bzip2 ca-certificates tini && update-ca-certificates
+#RUN apk add bash git tar bzip2 ca-certificates tini && update-ca-certificates
 
 # get sample Armidale spatial data
 
@@ -30,12 +31,13 @@ RUN conda update conda && conda config --append channels conda-forge && \
     jupyter labextension install @jupyterlab/geojson-extension && \
     conda clean --all -f -y
 
-RUN apk add build-base
-RUN conda install jupyterhub
+#RUN apk add build-base
+#RUN conda install jupyterhub
 
 #RUN mkdir ~/work
 #RUN jupyter notebook --generate-config --allow-root
 ##RUN echo "c.NotebookApp.password = u'sha1:6a3f528eec40:6e896b6e4828f525a6e20e5411cd1c8075d68619'" >> ~/.jupyter/jupyter_notebook_config.py
+RUN echo "c.Spawner.default_url = '/lab'" >> .jupyter/jupyterhub_config.py
 #WORKDIR ~/work
 
 # Jupyyter listens on port 8888
@@ -56,10 +58,10 @@ RUN conda install jupyterhub
 #
 #RUN pip install . && rm -rf $PWD ~/.cache ~/.npm
 
-RUN mkdir -p /srv/jupyterhub/
-WORKDIR /srv/jupyterhub/
-EXPOSE 8000
-
-LABEL org.jupyter.service="jupyterhub"
-
-CMD ["jupyterhub"]
+#RUN mkdir -p /srv/jupyterhub/
+#WORKDIR /srv/jupyterhub/
+#EXPOSE 8000
+#
+#LABEL org.jupyter.service="jupyterhub"
+#
+#CMD ["jupyterhub"]
