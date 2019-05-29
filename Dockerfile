@@ -44,7 +44,7 @@ EXPOSE 8888
 
 # add user
 RUN adduser -D -g '' gguser
-USER newuser
+USER gguser
 WORKDIR /home/gguser
 
 # Run Jupyter notebook
