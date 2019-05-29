@@ -31,7 +31,7 @@ RUN conda update conda && conda config --append channels conda-forge && \
     conda clean --all -f -y
 
 RUN conda install jupyterhub
-RUN conda install notebook
+RUN conda install ctypes
 
 RUN mkdir ~/work
 RUN jupyter notebook --generate-config --allow-root
