@@ -1,4 +1,4 @@
-#FROM frolvlad/alpine-miniconda3:latest
+FROM frolvlad/alpine-miniconda3:latest
 #FROM jupyterhub/jupyterhub:latest
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
