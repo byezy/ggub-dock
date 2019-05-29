@@ -1,40 +1,35 @@
 FROM byezy/ggub-base:latest
 
-# get github code source
-
-RUN wget --no-check-certificate -O ggub.tar.gz https://github.com/byezy/ggub/archive/v16-dev.tar.gz && \
-    tar -xzf ggub.tar.gz && rm ggub.tar.gz
-
 # alpine
 
-RUN apk add bash build-base npm nodejs
+RUN apk add bash build-base npm nodejs libgcc
 
 # conda
 
 RUN conda update conda && conda config --append channels conda-forge
 
-RUN conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipywidgets beakerx tk nodejs
+RUN conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipywidgets beakerx tk pamela
 
-RUN npm i beakerx-jupyterlab
+#RUN npm i beakerx-jupyterlab
 
 #RUN conda config --env --add pinned_packages 'openjdk>8.0.121' && \
 #    jupyter labextension install @jupyterlab/geojson-extension
 #    jupyter labextension install beakerx-jupyterlab && \
 #    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
 
-RUN conda install -y jupyterhub
+#RUN conda install -y jupyterhub
 #RUN conda install -y sqlalchemy tornado jinja2 traitlets requests pycurl
 RUN conda update --all && conda clean --all -f -y
 
 #RUN mkdir ~/work
 #RUN jupyter labextension install @jupyterlab/hub-extension --debug
 
-RUN mkdir -p /etc/jupyter
-#RUN jupyter notebook --generate-config --allow-root
-WORKDIR /etc/jupyter
-RUN jupyterhub --generate-config
+#RUN mkdir -p /etc/jupyter
+##RUN jupyter notebook --generate-config --allow-root
+#WORKDIR /etc/jupyter
+#RUN jupyterhub --generate-config
 ##RUN echo "c.NotebookApp.password = u'sha1:6a3f528eec40:6e896b6e4828f525a6e20e5411cd1c8075d68619'" >> ~/.jupyter/jupyter_notebook_config.py
-RUN echo "c.Spawner.default_url = '/lab'" >> /etc/jupyter/jupyterhub_config.py
+#RUN echo "c.Spawner.default_url = '/lab'" >> /etc/jupyter/jupyterhub_config.py
 #RUN find -name jupyterhub_config.py -print
 #WORKDIR ~/work
 
@@ -55,11 +50,16 @@ RUN echo "c.Spawner.default_url = '/lab'" >> /etc/jupyter/jupyterhub_config.py
 #WORKDIR /src/jupyterhub
 #
 #RUN pip install . && rm -rf $PWD ~/.cache ~/.npm
+#
+#RUN mkdir -p /srv/jupyterhub/
+#WORKDIR /srv/jupyterhub/
+#EXPOSE 8000
+#LABEL org.jupyter.service="jupyterhub"
 
-RUN mkdir -p /srv/jupyterhub/
-WORKDIR /srv/jupyterhub/
-EXPOSE 8000
+# get github code source
 
-LABEL org.jupyter.service="jupyterhub"
+RUN wget --no-check-certificate -O ggub.tar.gz https://github.com/byezy/ggub/archive/v16-dev.tar.gz && \
+    tar -xzf ggub.tar.gz && rm ggub.tar.gz
+
 
 CMD ["jupyterhub"]
