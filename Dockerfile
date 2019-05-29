@@ -29,12 +29,14 @@ RUN conda update conda && conda config --append channels conda-forge && \
     jupyter labextension install @jupyterlab/geojson-extension
 
 RUN conda install -y jupyterhub
-RUN conda install -y sqlalchemy tornado jinja2 traitlets requests pycurl
+#RUN conda install -y sqlalchemy tornado jinja2 traitlets requests pycurl
 RUN conda update --all
 RUN conda clean --all -f -y
 
 #RUN mkdir ~/work
-RUN jupyter labextension install @jupyterlab/hub-extension
+RUN jupyter labextension install @jupyterlab/hub-extension --debug
+
+
 RUN mkdir -p /etc/jupyter
 #RUN jupyter notebook --generate-config --allow-root
 WORKDIR /etc/jupyter
