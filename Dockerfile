@@ -50,11 +50,11 @@ RUN conda install jupyterhub
 # Run Jupyter notebook
 
 #CMD ["jupyter", "lab", "--ip", "0.0.0.0", "--allow-root"]
-
-ADD . /src/jupyterhub
-WORKDIR /src/jupyterhub
-
-RUN pip install . && rm -rf $PWD ~/.cache ~/.npm
+#
+#ADD . /src/jupyterhub
+#WORKDIR /src/jupyterhub
+#
+#RUN pip install . && rm -rf $PWD ~/.cache ~/.npm
 
 RUN mkdir -p /srv/jupyterhub/
 WORKDIR /srv/jupyterhub/
