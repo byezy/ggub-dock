@@ -2,7 +2,7 @@ FROM frolvlad/alpine-miniconda3:latest
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
-RUN apk add bash git tar bzip2 ca-certificates tini && update-ca-certificates build-base nodejs
+RUN apk add bash git tar bzip2 ca-certificates tini && update-ca-certificates build-base npm nodejs
 
 # get sample Armidale spatial data
 
@@ -22,11 +22,14 @@ RUN wget --no-check-certificate -O ggub.tar.gz https://github.com/byezy/ggub/arc
 # conda
 
 RUN conda update conda && conda config --append channels conda-forge && \
-    conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipywidgets beakerx tk nodejs && \
-    conda config --env --add pinned_packages 'openjdk>8.0.121' && \
+    conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipywidgets beakerx tk nodejs
+
+RUN npm i beakerx-jupyterlab
+
+RUN conda config --env --add pinned_packages 'openjdk>8.0.121' && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
-    jupyter labextension install beakerx-jupyterlab && \
     jupyter labextension install @jupyterlab/geojson-extension
+#    jupyter labextension install beakerx-jupyterlab && \
 
 RUN conda install -y jupyterhub
 #RUN conda install -y sqlalchemy tornado jinja2 traitlets requests pycurl
