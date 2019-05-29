@@ -2,7 +2,7 @@ FROM frolvlad/alpine-miniconda3:latest
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
-RUN apk add bash git tar bzip2 ca-certificates tini && update-ca-certificates build-base
+RUN apk add bash git tar bzip2 ca-certificates tini && update-ca-certificates build-base nodejs
 
 # get sample Armidale spatial data
 
