@@ -30,9 +30,9 @@ RUN conda update conda && conda config --append channels conda-forge && \
     jupyter labextension install @jupyterlab/geojson-extension && \
     conda clean --all -f -y
 
-#RUN apk add build-base
+RUN apk add build-base
 RUN conda install -y jupyterhub
-RUN conda instal -y sqlalchemy tornado jinja2 traitlets requests pycurl
+RUN conda install -y sqlalchemy tornado jinja2 traitlets requests pycurl
 
 #RUN mkdir ~/work
 #RUN jupyter notebook --generate-config --allow-root
@@ -58,10 +58,10 @@ RUN echo "c.Spawner.default_url = '/lab'" >> .jupyter/jupyterhub_config.py
 #
 #RUN pip install . && rm -rf $PWD ~/.cache ~/.npm
 
-#RUN mkdir -p /srv/jupyterhub/
-#WORKDIR /srv/jupyterhub/
-#EXPOSE 8000
-#
-#LABEL org.jupyter.service="jupyterhub"
-#
-#CMD ["jupyterhub"]
+RUN mkdir -p /srv/jupyterhub/
+WORKDIR /srv/jupyterhub/
+EXPOSE 8000
+
+LABEL org.jupyter.service="jupyterhub"
+
+CMD ["jupyterhub"]
