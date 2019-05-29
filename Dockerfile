@@ -1,9 +1,8 @@
 FROM frolvlad/alpine-miniconda3:latest
-#FROM jupyterhub/jupyterhub:latest
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
-#RUN apk add bash git tar bzip2 ca-certificates tini && update-ca-certificates
+RUN apk add bash git tar bzip2 ca-certificates tini && update-ca-certificates
 
 # get sample Armidale spatial data
 
