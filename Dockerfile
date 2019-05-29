@@ -29,7 +29,10 @@ RUN conda update conda && conda config --append channels conda-forge && \
     jupyter labextension install beakerx-jupyterlab && \
     jupyter labextension install @jupyterlab/geojson-extension && \
     conda clean --all -f -y
-    
+
+RUN conda install jupyterhub
+RUN conda install notebook
+
 RUN mkdir ~/work
 RUN jupyter notebook --generate-config --allow-root
 #RUN echo "c.NotebookApp.password = u'sha1:6a3f528eec40:6e896b6e4828f525a6e20e5411cd1c8075d68619'" >> ~/.jupyter/jupyter_notebook_config.py
