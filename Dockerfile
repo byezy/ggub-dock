@@ -1,5 +1,5 @@
 #FROM frolvlad/alpine-miniconda3:latest
-FROM jupyterhub/jupyterhub:latest
+#FROM jupyterhub/jupyterhub:latest
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
@@ -32,7 +32,8 @@ RUN conda update conda && conda config --append channels conda-forge && \
     conda clean --all -f -y
 
 #RUN apk add build-base
-#RUN conda install jupyterhub
+RUN conda install -y jupyterhub
+RUN conda instal -y sqlalchemy tornado jinja2 traitlets requests pycurl
 
 #RUN mkdir ~/work
 #RUN jupyter notebook --generate-config --allow-root
