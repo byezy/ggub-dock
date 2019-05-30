@@ -7,8 +7,8 @@ RUN apk add bash build-base npm nodejs libgcc
 # conda
 
 RUN conda update conda && conda config --append channels conda-forge
-
 RUN conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipywidgets beakerx tk pamela
+RUN conda update --all && conda clean --all -f -y
 
 #RUN npm i beakerx-jupyterlab
 
@@ -19,7 +19,6 @@ RUN conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipy
 
 #RUN conda install -y jupyterhub
 #RUN conda install -y sqlalchemy tornado jinja2 traitlets requests pycurl
-RUN conda update --all && conda clean --all -f -y
 
 #RUN mkdir ~/work
 #RUN jupyter labextension install @jupyterlab/hub-extension --debug
@@ -56,10 +55,14 @@ RUN conda update --all && conda clean --all -f -y
 #EXPOSE 8000
 #LABEL org.jupyter.service="jupyterhub"
 
+# add user
+RUN adduser -D -g '' gg
+USER gg
+WORKDIR /home/gg
+
 # get github code source
 
 RUN wget --no-check-certificate -O ggub.tar.gz https://github.com/byezy/ggub/archive/v16-dev.tar.gz && \
     tar -xzf ggub.tar.gz && rm ggub.tar.gz
 
-
-CMD ["jupyterhub"]
+CMD ["jupyter", "lab", "--init", "--notebook-dir=/home/ggubu/", "--ip='0.0.0.0'", "--port=8888", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
