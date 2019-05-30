@@ -67,4 +67,4 @@ RUN chmod -R 777 /home/gg
 RUN wget --no-check-certificate -O ggub.tar.gz https://github.com/byezy/ggub/archive/v16-dev.tar.gz && \
     tar -xzf ggub.tar.gz && rm ggub.tar.gz
 
-CMD ["jupyter", "lab", "--notebook-dir=/home/gg/", "--ip='0.0.0.0'", "--port=8888", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+CMD ["jupyter", "lab", "--notebook-dir=/home/gg/", "--ip='0.0.0.0'", "--port=8888", "--NotebookApp.token=''", "--NotebookApp.password=''", "--allow-root"]
