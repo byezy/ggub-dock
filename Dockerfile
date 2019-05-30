@@ -10,6 +10,7 @@ RUN conda update conda && conda config --append channels conda-forge
 RUN conda install -y numpy pandas geopandas gdal rasterio ipython jupyterlab ipywidgets beakerx tk pamela
 RUN conda update --all && conda clean --all -f -y
 
+RUN conda install -y qgrid
 #RUN npm i beakerx-jupyterlab
 
 #RUN conda config --env --add pinned_packages 'openjdk>8.0.121' && \
