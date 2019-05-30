@@ -60,7 +60,7 @@ RUN conda install -y qgrid
 RUN adduser -D -g '' gg
 USER gg
 WORKDIR /home/gg/
-#RUN touch /home/gg/.local
+RUN mkdirs /home/gg/.local/share
 
 # get github code source
 
