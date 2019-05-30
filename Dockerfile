@@ -57,6 +57,7 @@ RUN conda install -y qgrid
 #LABEL org.jupyter.service="jupyterhub"
 
 # add user
+RUN mkdir /home/gg
 RUN adduser -D -g '' gg
 USER gg
 WORKDIR /home/gg
