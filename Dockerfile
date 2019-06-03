@@ -1,3 +1,5 @@
+# FIRST STAGE OF BUILD
+
 FROM busybox AS data
 
 RUN mkdir /gg_sample_data
@@ -14,6 +16,8 @@ RUN wget --no-check-certificate -O mcass.tar.gz https://github.com/byezy/mcassex
 # BeakerX
 RUN wget --no-check-certificate -O beakerx.tar.gz https://github.com/twosigma/beakerx/archive/1.4.1.tar.gz && \
     tar -xzf beakerx.tar.gz && rm beakerx.tar.gz
+
+# SECOND STAGE OF BUILD
 
 FROM frolvlad/alpine-miniconda3:latest
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
