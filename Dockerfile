@@ -19,14 +19,14 @@ RUN conda update --all && conda clean --all -f -y
 
 EXPOSE 8888
 
-# add user
-# RUN mkdir /home/gg
-# RUN adduser -D -g '' gg
-# USER gg
-# WORKDIR /home/gg
+add user
+RUN mkdir /home/gg
+RUN adduser -D -g '' gg
+USER gg
+WORKDIR /home/gg
 # RUN chmod -R 777 /home/gg
 
 # Run Jupyter notebook
 
 # CMD ["jupyter", "lab", "--notebook-dir=/home/jovyan/work", "--ip='0.0.0.0'", "--port=8888", "--NotebookApp.token=''", "--NotebookApp.password=''", "--allow-root", "--no-browser"]
-CMD ["jupyter", "lab", "--ip='0.0.0.0'", "--port=8888", "--NotebookApp.token=''", "--NotebookApp.password=''", "--allow-root", "--no-browser"]
+CMD ["jupyter", "lab", "--notebook-dir=/home/gg", "--ip='0.0.0.0'", "--port=8888", "--NotebookApp.token=''", "--NotebookApp.password=''", "--allow-root", "--no-browser"]
