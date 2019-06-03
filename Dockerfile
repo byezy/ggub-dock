@@ -41,7 +41,7 @@ RUN conda update --all && conda clean --all -f -y
 EXPOSE 8888
 
 # add user
-RUN mkdir /home/gg
+RUN mkdir -p /home/gg/host
 RUN adduser -D -g '' gg
 USER gg
 WORKDIR /home/gg
