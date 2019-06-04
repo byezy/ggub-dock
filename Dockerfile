@@ -2,17 +2,9 @@
 
 FROM busybox AS data
 
-# get sample Armidale spatial data
-RUN mkdir -p /sample_data/armidale
-# WORKDIR /sample_data/armidale
-RUN wget --no-check-certificate -O armidale.tar.gz https://github.com/NSW-OEH-EMS-KST/grid-garage-sample-data/archive/GridGarage_SampleData_v1.0.2.tar.gz && \
-    tar -xzf armidale.tar.gz --directory /sample_data/armidale && rm armidale.tar.gz
-
-# get sample MCASS spatial data
-RUN mkdir -p /sample_data/mcass
-WORKDIR /sample_data/mcass
-RUN wget --no-check-certificate -O mcass.tar.gz https://github.com/byezy/mcassexample/archive/v1.0.tar.gz && \
-    tar -xzf mcass.tar.gz --directory /sample_data/mcass  && rm mcass.tar.gz
+# get sample spatial data
+RUN wget --no-check-certificate -O data.tar.gz https://github.com/byezy/sample-spatial-data/archive/v1.1.tar.gz && \
+    tar -xzf data.tar.gz  && rm data.tar.gz
 
 # SECOND STAGE OF BUILD alpine + glibc #
 
@@ -110,8 +102,8 @@ RUN adduser -D -g '' gg
 USER gg
 WORKDIR /home/gg
 
-COPY --from=data /sample_data/armidale /home/gg/sample_data
-COPY --from=data /sample_data/mcass /home/gg/sample_data
+COPY --from=data /sample-spatial-data /home/gg/sample_data
+# COPY --from=data /sample_data/mcass /home/gg/sample_data
 
 # gg
 RUN wget --no-check-certificate -O ggub.tar.gz https://github.com/byezy/ggub/archive/v16-dev.tar.gz && \
