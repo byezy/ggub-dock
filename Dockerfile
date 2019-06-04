@@ -98,8 +98,8 @@ COPY --from=data /sample-spatial-data-1.1 /home/gg/sample_data
 # COPY --from=data /sample_data/mcass /home/gg/sample_data
 
 # gg
-RUN wget --no-check-certificate -O ggub.tar.gz https://github.com/byezy/ggub/archive/v16-dev.tar.gz && \
-    tar -xzf ggub.tar.gz && rm ggub.tar.gz
+RUN wget --no-check-certificate -O ggj.tar.gz https://github.com/byezy/ggj/archive/v17-dev.tar.gz && \
+    tar -xzf ggj.tar.gz && rm ggj.tar.gz
 
 # Run Jupyter notebook
 
