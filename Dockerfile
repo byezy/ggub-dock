@@ -78,7 +78,7 @@ FROM alp_glibc
 
 # Alpine
 RUN apk update
-RUN apk add --no-cache bash build-base npm nodejs libgcc git tar bzip2 ca-certificates
+RUN apk add --no-cache bash build-base npm nodejs libgcc
 RUN update-ca-certificates
 RUN apk upgrade
 
@@ -92,22 +92,22 @@ RUN echo $CONDA_DIR
 # ENV CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
 
 
-# RUN mkdir -p "$CONDA_DIR" && \
-#     wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
-#     echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c && \
-#     bash miniconda.sh -f -b -p "$CONDA_DIR" && \
-#     echo "export PATH=$CONDA_DIR/bin:\$PATH" > /etc/profile.d/conda.sh && \
-#     rm miniconda.sh
-
-
-# RUN mkdir -p "$CONDA_DIR"
-RUN bash miniconda.sh -f -b -p "$CONDA_DIR" && \
+RUN mkdir -p "$CONDA_DIR" && \
+    wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
+    echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c && \
+    bash miniconda.sh -f -b -p "$CONDA_DIR" && \
     echo "export PATH=$CONDA_DIR/bin:\$PATH" > /etc/profile.d/conda.sh && \
-    rm miniconda.sh 
-RUN \
-    conda update conda && conda config --set auto_update_conda False && \
-    rm -r "$CONDA_DIR/pkgs/" && apk del --purge .build-dependencies && mkdir -p "$CONDA_DIR/locks" && \
-    chmod 777 "$CONDA_DIR/locks"
+    rm miniconda.sh
+
+
+# # RUN mkdir -p "$CONDA_DIR"
+# RUN bash miniconda.sh -f -b -p "$CONDA_DIR" && \
+#     echo "export PATH=$CONDA_DIR/bin:\$PATH" > /etc/profile.d/conda.sh && \
+#     rm miniconda.sh 
+# RUN \
+#     conda update conda && conda config --set auto_update_conda False && \
+#     rm -r "$CONDA_DIR/pkgs/" && apk del --purge .build-dependencies && mkdir -p "$CONDA_DIR/locks" && \
+#     chmod 777 "$CONDA_DIR/locks"
 
 ENV PATH="$CONDA_DIR/bin:$PATH"
 
