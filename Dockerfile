@@ -42,8 +42,8 @@ ENV PATH="$CONDA_DIR/bin:$PATH"
 COPY --from=data /miniconda.sh .
 
 # Install conda
-RUN /miniconda.sh -f -b -p "$CONDA_DIR" 
-RUN echo "export PATH=$CONDA_DIR/bin:\$PATH" > /etc/profile.d/conda.sh && \
+RUN mkdir -p "$CONDA_DIR" && bash miniconda.sh -f -b -p "$CONDA_DIR" && \
+    echo "export PATH=$CONDA_DIR/bin:\$PATH" > /etc/profile.d/conda.sh && \
     rm miniconda.sh && \ conda update conda && conda config --set auto_update_conda False && \
     rm -r "$CONDA_DIR/pkgs/" && apk del --purge .build-dependencies && mkdir -p "$CONDA_DIR/locks" && \
     chmod 777 "$CONDA_DIR/locks"
