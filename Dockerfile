@@ -24,9 +24,6 @@ FROM alpine:latest AS alp_glibc
 
 ENV LANG=C.UTF-8
 
-
-
-
 RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" && \
     ALPINE_GLIBC_PACKAGE_VERSION="2.29-r0" && \
     ALPINE_GLIBC_BASE_PACKAGE_FILENAME="glibc-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
@@ -66,11 +63,10 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
         "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
 
 RUN apk update
-# RUN apk add --no-cache bash build-base npm nodejs libgcc
+RUN apk add --no-cache bash 
+#build-base npm nodejs libgcc
 # RUN update-ca-certificates
 RUN apk upgrade
-
-
 
 # THIRD STAGE OF BUILD conda
 
