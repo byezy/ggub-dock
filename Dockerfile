@@ -99,7 +99,7 @@ COPY --from=data /sample-spatial-data-1.1 /home/ggj/sample_data
 
 # gg
 RUN wget --no-check-certificate -O ggj.tar.gz https://github.com/byezy/ggj/archive/v17-dev.tar.gz && \
-    tar -xzf ggj.tar.gz && rm ggj.tar.gz
+    tar -xzf ggj.tar.gz --directory /home/ggj && rm ggj.tar.gz
 
 # Run Jupyter notebook
 
