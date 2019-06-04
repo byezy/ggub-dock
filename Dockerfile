@@ -1,4 +1,4 @@
-# FIRST STAGE OF BUILD #
+# FIRST STAGE OF BUILD static data #
 
 FROM busybox AS data
 
@@ -17,20 +17,15 @@ RUN wget --no-check-certificate -O mcass.tar.gz https://github.com/byezy/mcassex
 # RUN wget --no-check-certificate -O beakerx.tar.gz https://github.com/twosigma/beakerx/archive/1.4.1.tar.gz && \
 #     tar -xzf beakerx.tar.gz && rm beakerx.tar.gz
 
-# get conda 
-ENV CONDA_VERSION="4.6.14"
-ENV CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
-WORKDIR /
-RUN wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
-    echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c
-
-#######################
+# SECOND STAGE OF BUILD alpine + glibc #
 
 FROM alpine:latest AS alp_glibc
+# install GNU libc (aka glibc) and set C.UTF-8 locale as default
 
 ENV LANG=C.UTF-8
 
-# Here we install GNU libc (aka glibc) and set C.UTF-8 locale as default.
+
+
 
 RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" && \
     ALPINE_GLIBC_PACKAGE_VERSION="2.29-r0" && \
@@ -70,19 +65,25 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
         "$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
         "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
 
-# SECOND STAGE OF BUILD
-
-FROM alp_glibc
-
-# ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-
-# Alpine
 RUN apk update
-RUN apk add --no-cache bash build-base npm nodejs libgcc
-RUN update-ca-certificates
+# RUN apk add --no-cache bash build-base npm nodejs libgcc
+# RUN update-ca-certificates
 RUN apk upgrade
 
-COPY --from=data /miniconda.sh .
+
+
+# THIRD STAGE OF BUILD conda
+
+FROM alp_glibc AS alp_glibc_conda
+
+# get conda 
+ENV CONDA_VERSION="4.6.14"
+ENV CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
+WORKDIR /
+RUN wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
+    echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c
+
+# COPY --from=data /miniconda.sh .
 
 # Install conda
 ENV CONDA_DIR="/opt/conda"
@@ -109,7 +110,8 @@ RUN \
 
 # THIRD STAGE OF BUILD
 
-FROM alp_glibc
+FROM alp_glibc_conda
+
 MAINTAINER dbye68@gmail.com
 
 COPY --from=data /gg_sample_data .
