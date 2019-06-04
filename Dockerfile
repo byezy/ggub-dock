@@ -88,13 +88,13 @@ RUN pip install gis-metadata-parser pycrsx
 EXPOSE 8888
 
 # add user
-RUN mkdir -p /home/gg/host
-RUN mkdir -p /home/gg/sample_data
-RUN adduser -D -g '' gg
-USER gg
-WORKDIR /home/gg
+RUN mkdir -p /home/ggj/host
+RUN mkdir -p /home/ggj/sample_data
+RUN adduser -D -g '' ggj
+USER ggj
+WORKDIR /home/ggj
 
-COPY --from=data /sample-spatial-data-1.1 /home/gg/sample_data
+COPY --from=data /sample-spatial-data-1.1 /home/ggj/sample_data
 # COPY --from=data /sample_data/mcass /home/gg/sample_data
 
 # gg
@@ -103,4 +103,4 @@ RUN wget --no-check-certificate -O ggj.tar.gz https://github.com/byezy/ggj/archi
 
 # Run Jupyter notebook
 
-CMD ["jupyter", "lab", "--notebook-dir=/home/gg", "--ip='0.0.0.0'", "--port=8888", "--NotebookApp.token=''", "--NotebookApp.password=''", "--allow-root", "--no-browser"]
+CMD ["jupyter", "lab", "--notebook-dir=/home/ggj", "--ip='0.0.0.0'", "--port=8888", "--NotebookApp.token=''", "--NotebookApp.password=''", "--allow-root", "--no-browser"]
