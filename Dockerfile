@@ -26,13 +26,13 @@ RUN wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x
 
 # SECOND STAGE OF BUILD
 
-FROM alpine:latest AS alpine_os
+FROM alpine:latest AS alps
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 # Alpine
 RUN apk update
-RUN apk add--no-cache bash build-base npm nodejs libgcc git tar bzip2 ca-certificates
+RUN apk add --no-cache --virtual=.build-dependencies bash build-base npm nodejs libgcc git tar bzip2 ca-certificates
 RUN update-ca-certificates
 RUN apk upgrade
 
@@ -49,11 +49,10 @@ RUN bash miniconda.sh -f -b -p "$CONDA_DIR" && echo "export PATH=$CONDA_DIR/bin:
 
 # THIRD STAGE OF BUILD
 
-FROM alpine_os
+FROM alps
 MAINTAINER dbye68@gmail.com
 
 COPY --from=data /gg_sample_data .
-
 
 # Conda
 RUN conda config --append channels conda-forge && conda install -y numpy pandas geopandas gdal shapely rasterio fiona \
