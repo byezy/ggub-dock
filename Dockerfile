@@ -56,7 +56,7 @@ ENV CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
 
 
 RUN mkdir -p "$CONDA_DIR"
-RUN bash miniconda.sh -p "$CONDA_DIR"
+RUN bash miniconda.sh -b "$CONDA_DIR"
 RUN echo "export PATH=$CONDA_DIR/bin:\$PATH" > /etc/profile.d/conda.sh && \
     rm miniconda.sh && \ conda update conda && conda config --set auto_update_conda False && \
     rm -r "$CONDA_DIR/pkgs/" && apk del --purge .build-dependencies && mkdir -p "$CONDA_DIR/locks" && \
