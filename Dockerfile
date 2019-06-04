@@ -32,7 +32,7 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 # Alpine
 RUN apk update
-RUN apk add--no-cache --virtual=.build-dependencies bash build-base npm nodejs libgcc git tar bzip2 ca-certificates
+RUN apk add--no-cache bash build-base npm nodejs libgcc git tar bzip2 ca-certificates
 RUN update-ca-certificates
 RUN apk upgrade
 
