@@ -32,7 +32,7 @@ RUN sh miniconda.sh -f -b -p "$CONDA_DIR"
 
 #######################
 
-FROM alpine:latest
+FROM alpine:latest AS alp_glibc
 
 ENV LANG=C.UTF-8
 
@@ -78,7 +78,7 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
 
 # SECOND STAGE OF BUILD
 
-# FROM alpine:latest AS alps
+FROM alp_glibc
 
 # ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
