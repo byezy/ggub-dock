@@ -2,16 +2,17 @@
 
 FROM busybox AS data
 
-RUN mkdir /gg_sample_data
-WORKDIR /gg_sample_data
-
 # get sample Armidale spatial data
+RUN mkdir -p /sample_data/armidale
+# WORKDIR /sample_data/armidale
 RUN wget --no-check-certificate -O armidale.tar.gz https://github.com/NSW-OEH-EMS-KST/grid-garage-sample-data/archive/GridGarage_SampleData_v1.0.2.tar.gz && \
-    tar -xzf armidale.tar.gz && rm armidale.tar.gz
+    tar -xzf armidale.tar.gz --directory /sample_data/armidale && rm armidale.tar.gz
 
 # get sample MCASS spatial data
+RUN mkdir -p /sample_data/mcass
+WORKDIR /sample_data/mcass
 RUN wget --no-check-certificate -O mcass.tar.gz https://github.com/byezy/mcassexample/archive/v1.0.tar.gz && \
-    tar -xzf mcass.tar.gz mcassexample-1.0 && rm mcass.tar.gz
+    tar -xzf mcass.tar.gz --directory /sample_data/mcass  && rm mcass.tar.gz
 
 # SECOND STAGE OF BUILD alpine + glibc #
 
@@ -91,8 +92,6 @@ FROM alp_glibc_conda
 
 MAINTAINER dbye68@gmail.com
 
-COPY --from=data /gg_sample_data .
-
 # Conda
 RUN conda config --append channels conda-forge && conda install -y numpy pandas geopandas gdal shapely rasterio fiona \
     rasterstats descartes pySAL xarray scikit-image scikit-learn folium pyproj ipython jupyterlab ipywidgets beakerx tk qgrid
@@ -106,11 +105,13 @@ EXPOSE 8888
 
 # add user
 RUN mkdir -p /home/gg/host
+RUN mkdir -p /home/gg/sample_data
 RUN adduser -D -g '' gg
 USER gg
 WORKDIR /home/gg
 
-COPY --from=data /gg_sample_data .
+COPY --from=data /sample_data/armidale /home/gg/sample_data
+COPY --from=data /sample_data/mcass /home/gg/sample_data
 
 # gg
 RUN wget --no-check-certificate -O ggub.tar.gz https://github.com/byezy/ggub/archive/v16-dev.tar.gz && \
