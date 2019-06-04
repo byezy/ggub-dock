@@ -27,7 +27,7 @@ RUN wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x
 
 ENV CONDA_DIR="/opt/conda"
 RUN mkdir -p "$CONDA_DIR"
-RUN sh miniconda.sh -f -b -p "$CONDA_DIR"
+# RUN sh miniconda.sh -f -b -p "$CONDA_DIR"
 
 
 #######################
