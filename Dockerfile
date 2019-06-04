@@ -97,8 +97,8 @@ WORKDIR /home/ggj
 COPY --from=data /sample-spatial-data-1.1 /home/ggj/sample_data
 
 # gg
-RUN wget --no-check-certificate -O ggj.tar.gz https://github.com/byezy/ggj/archive/v17-dev.tar.gz && \
-    tar -xzf ggj.tar.gz && rm ggj.tar.gz && mv /home/ggj/ggj-17-dev/* /home/ggj && rm -rf /home/ggj/ggj-17-dev
+RUN wget --no-check-certificate -O ggj.tar.gz https://github.com/byezy/ggj/archive/v18-dev.tar.gz && \
+    tar -xzf ggj.tar.gz && rm ggj.tar.gz && mv /home/ggj/ggj-18-dev/* /home/ggj && rm -rf /home/ggj/ggj-18-dev
 
 # Run Jupyter notebook
 CMD ["jupyter", "lab", "--notebook-dir=/home/ggj", "--ip='0.0.0.0'", "--port=8888", "--NotebookApp.token=''", "--NotebookApp.password=''", "--allow-root", "--no-browser"]
