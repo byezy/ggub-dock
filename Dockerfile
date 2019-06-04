@@ -43,6 +43,9 @@ COPY --from=data /miniconda.sh .
 # Install conda
 RUN mkdir -p "$CONDA_DIR" 
 RUN echo $CONDA_DIR 
+ENV CONDA_VERSION="4.6.14"
+ENV CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
+
 
 RUN mkdir -p "$CONDA_DIR" && \
     wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
