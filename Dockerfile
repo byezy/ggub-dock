@@ -34,9 +34,11 @@ RUN apk upgrade
 # Conda
 RUN conda update conda && conda config --append channels conda-forge
 RUN conda install -y numpy pandas geopandas gdal shapely rasterio fiona rasterstats descartes \
-    pySAL xarray scikit-image scikit-learn folium pyproj gis-metadata-parser \
+    pySAL xarray scikit-image scikit-learn folium pyproj \
     ipython jupyterlab ipywidgets beakerx tk qgrid
 RUN conda update --all && conda clean --all -f -y
+
+RUN pip install -y  gis-metadata-parser pycrsx
 
 # Jupyyter listens on port 8888
 
