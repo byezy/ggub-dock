@@ -43,6 +43,15 @@ COPY --from=data /miniconda.sh .
 # Install conda
 RUN mkdir -p "$CONDA_DIR" 
 RUN echo $CONDA_DIR 
+
+RUN mkdir -p "$CONDA_DIR" && \
+    wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
+    echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c && \
+    bash miniconda.sh -f -b -p "$CONDA_DIR" && \
+    echo "export PATH=$CONDA_DIR/bin:\$PATH" > /etc/profile.d/conda.sh && \
+    rm miniconda.sh
+
+
 RUN bash miniconda.sh -f -b -p "$CONDA_DIR"
 RUN echo "export PATH=$CONDA_DIR/bin:\$PATH" > /etc/profile.d/conda.sh && \
     rm miniconda.sh && \ conda update conda && conda config --set auto_update_conda False && \
