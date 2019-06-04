@@ -102,7 +102,7 @@ RUN adduser -D -g '' gg
 USER gg
 WORKDIR /home/gg
 
-COPY --from=data /sample-spatial-data /home/gg/sample_data
+COPY --from=data /sample-spatial-data-1.1 /home/gg/sample_data
 # COPY --from=data /sample_data/mcass /home/gg/sample_data
 
 # gg
