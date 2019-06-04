@@ -11,11 +11,7 @@ RUN wget --no-check-certificate -O armidale.tar.gz https://github.com/NSW-OEH-EM
 
 # get sample MCASS spatial data
 RUN wget --no-check-certificate -O mcass.tar.gz https://github.com/byezy/mcassexample/archive/v1.0.tar.gz && \
-    tar -xzf mcass.tar.gz && rm mcass.tar.gz
-
-# # BeakerX
-# RUN wget --no-check-certificate -O beakerx.tar.gz https://github.com/twosigma/beakerx/archive/1.4.1.tar.gz && \
-#     tar -xzf beakerx.tar.gz && rm beakerx.tar.gz
+    tar -xzf mcass.tar.gz mcassexample-1.0 && rm mcass.tar.gz
 
 # SECOND STAGE OF BUILD alpine + glibc #
 
@@ -61,14 +57,12 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
         "$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" \
         "$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" \
         "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
-#  && apk del --purge .build-dependencies 
+
 RUN apk update
 RUN apk add --no-cache bash 
-#build-base npm nodejs libgcc
-# RUN update-ca-certificates
 RUN apk upgrade
 
-# THIRD STAGE OF BUILD conda
+# THIRD STAGE OF BUILD conda #
 
 FROM alp_glibc AS alp_glibc_conda
 
@@ -79,22 +73,19 @@ WORKDIR /
 RUN wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
     echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c
 
-# COPY --from=data /miniconda.sh .
-
-# Install conda
+# install conda
 ENV CONDA_DIR="/opt/conda"
-RUN mkdir -p "$CONDA_DIR" 
-
-RUN bash miniconda.sh -f -b -p "$CONDA_DIR" && \
+RUN mkdir -p "$CONDA_DIR" && \
+    bash miniconda.sh -f -b -p "$CONDA_DIR" && \
     echo "export PATH=$CONDA_DIR/bin:\$PATH" > /etc/profile.d/conda.sh && \
-    rm miniconda.sh && rm -r "$CONDA_DIR/pkgs/" && mkdir -p "$CONDA_DIR/locks" && \
-    chmod 777 "$CONDA_DIR/locks"
+    rm miniconda.sh && rm -r "$CONDA_DIR/pkgs/" && \
+    mkdir -p "$CONDA_DIR/locks" && chmod 777 "$CONDA_DIR/locks"
 
 ENV PATH="$CONDA_DIR/bin:$PATH"
 
 RUN conda update conda && conda config --set auto_update_conda False
 
-# THIRD STAGE OF BUILD
+# FOURTH STAGE OF BUILD python/jupyter #
 
 FROM alp_glibc_conda
 
