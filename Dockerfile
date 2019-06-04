@@ -24,6 +24,14 @@ WORKDIR /
 RUN wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
     echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c
 
+
+ENV CONDA_DIR="/opt/conda"
+RUN mkdir -p "$CONDA_DIR"
+RUN sh miniconda.sh -f -b -p "$CONDA_DIR"
+
+
+
+
 # SECOND STAGE OF BUILD
 
 FROM alpine:latest AS alps
@@ -56,7 +64,7 @@ ENV CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
 
 
 RUN mkdir -p "$CONDA_DIR"
-RUN bash miniconda.sh -b "$CONDA_DIR"
+RUN bash miniconda.sh -f -b -p "$CONDA_DIR"
 RUN echo "export PATH=$CONDA_DIR/bin:\$PATH" > /etc/profile.d/conda.sh && \
     rm miniconda.sh && \ conda update conda && conda config --set auto_update_conda False && \
     rm -r "$CONDA_DIR/pkgs/" && apk del --purge .build-dependencies && mkdir -p "$CONDA_DIR/locks" && \
