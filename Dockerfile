@@ -9,7 +9,7 @@ ENV CONDA_VERSION="4.6.14" CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
 RUN wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
     echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c
 
-FROM odise/busybox-curl AS glibc_files
+FROM busybox  AS glibc_files
 # FROM scratch
 # ADD rootfs.tar /
 
