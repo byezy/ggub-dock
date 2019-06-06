@@ -10,18 +10,16 @@ ENV CONDA_VERSION="4.6.14" CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
     GLIBC_BIN="glibc-bin-$GLIBC_VER.apk" \
     GLIBC_I18N="glibc-i18n-$GLIBC_VER.apk"
 
-# get sample spatial data and conda
-RUN \
-    wget https://github.com/byezy/sample-spatial-data/archive/v1.1.tar.gz -O data.tar.gz && \
+# get sample spatial data, conda and glibc
+RUN wget https://github.com/byezy/sample-spatial-data/archive/v1.1.tar.gz -O data.tar.gz && \
     tar -xzf data.tar.gz  && rm data.tar.gz && \
     \
     wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
     echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c && \
     \
-    wget "$GLIBC_URL/$GLIBC_VER/$GLIBC_BASE" -O glibc_base.apk \
+    wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_BASE" -O glibc_base.apk \
          "$GLIBC_URL/$GLIBC_VER/$GLIBC_BIN" -O glibc_bin.apk \
          "$GLIBC_URL/$GLIBC_VER/$GLIBC_I18N" -O glibc_i18n.apk 
-
 
 # SECOND STAGE OF BUILD alpine + glibc # -----------------------------------------------------------------------------------------------
 
