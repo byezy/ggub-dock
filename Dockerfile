@@ -1,10 +1,17 @@
 # FIRST STAGE OF BUILD static data #
 
 FROM busybox AS data
+ENV CONDA_VERSION="4.6.14"
+ENV CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
 
-# get sample spatial data
-RUN wget --no-check-certificate -O data.tar.gz https://github.com/byezy/sample-spatial-data/archive/v1.1.tar.gz && \
-    tar -xzf data.tar.gz  && rm data.tar.gz
+# get sample spatial data and conda
+RUN \
+    wget --no-check-certificate -O data.tar.gz https://github.com/byezy/sample-spatial-data/archive/v1.1.tar.gz && \
+    tar -xzf data.tar.gz  && rm data.tar.gz && \
+    \
+    wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
+    echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c
+
 
 # SECOND STAGE OF BUILD alpine + glibc #
 
@@ -43,32 +50,21 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
     rm "/root/.wget-hsts" && \
     rm "$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" "$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
 
-RUN apk update
-RUN apk add --no-cache bash 
-RUN apk upgrade
-
 # THIRD STAGE OF BUILD conda #
 
 FROM alp_glibc AS alp_glibc_conda
 
-# get conda 
-ENV CONDA_VERSION="4.6.14"
-ENV CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
-WORKDIR /
-RUN wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
-    echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c
+COPY --from=data miniconda.sh miniconda.sh
 
 # install conda
 ENV CONDA_DIR="/opt/conda"
+ENV PATH="$CONDA_DIR/bin:$PATH"
 RUN mkdir -p "$CONDA_DIR" && \
     bash miniconda.sh -f -b -p "$CONDA_DIR" && \
     echo "export PATH=$CONDA_DIR/bin:\$PATH" > /etc/profile.d/conda.sh && \
     rm miniconda.sh && rm -r "$CONDA_DIR/pkgs/" && \
-    mkdir -p "$CONDA_DIR/locks" && chmod 777 "$CONDA_DIR/locks"
-
-ENV PATH="$CONDA_DIR/bin:$PATH"
-
-RUN conda update conda && conda config --set auto_update_conda False
+    mkdir -p "$CONDA_DIR/locks" && chmod 777 "$CONDA_DIR/locks" && \
+    conda update conda && conda config --set auto_update_conda False
 
 # FOURTH STAGE OF BUILD python/jupyter #
 
@@ -76,28 +72,24 @@ FROM alp_glibc_conda
 
 MAINTAINER dbye68@gmail.com
 
+COPY --from=data /sample-spatial-data-1.1 /home/ggj/sample_data
+
 # configure conda packages
 RUN conda config --append channels conda-forge && conda install -y numpy pandas geopandas gdal shapely rasterio fiona rasterstats \
     descartes pySAL xarray scikit-image scikit-learn folium pyproj ipython jupyterlab ipywidgets beakerx tk qgrid cached-property \
-    dotmap
-RUN conda update --all && conda clean --all -f -y
-
-RUN pip install gis-metadata-parser pycrsx
+    dotmap && conda update --all && conda clean --all -f -y && pip install gis-metadata-parser pycrsx
 
 # Jupyyter listens on port 8888
-
 EXPOSE 8888
 
 # add user
-RUN mkdir -p /home/ggj/host
-RUN mkdir -p /home/ggj/sample_data
-RUN adduser -D -g '' ggj
+RUN mkdir -p /home/ggj/host && \
+    mkdir -p /home/ggj/sample_data && \
+    adduser -D -g '' ggj
 USER ggj
 WORKDIR /home/ggj
 
-COPY --from=data /sample-spatial-data-1.1 /home/ggj/sample_data
-
-# gg
+# ggj
 ENV GDEV="21"
 RUN wget --no-check-certificate -O ggj.tar.gz https://github.com/byezy/ggj/archive/v$GDEV-dev.tar.gz && \
     tar -xzf ggj.tar.gz && rm ggj.tar.gz && mv /home/ggj/ggj-$GDEV-dev/* /home/ggj && rm -rf /home/ggj/ggj-$GDEV-dev
