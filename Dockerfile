@@ -1,4 +1,4 @@
-# FIRST STAGE OF BUILD static data #
+# FIRST STAGE OF BUILD static data # ---------------------------------------------------------------------------------------------------
 
 FROM busybox AS data
 ENV CONDA_VERSION="4.6.14"
@@ -12,8 +12,7 @@ RUN \
     wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
     echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c
 
-
-# SECOND STAGE OF BUILD alpine + glibc #
+# SECOND STAGE OF BUILD alpine + glibc # -----------------------------------------------------------------------------------------------
 
 FROM alpine:latest AS alp_glibc
 
@@ -50,7 +49,7 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
     rm "/root/.wget-hsts" && \
     rm "$ALPINE_GLIBC_BASE_PACKAGE_FILENAME" "$ALPINE_GLIBC_BIN_PACKAGE_FILENAME" "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
 
-# THIRD STAGE OF BUILD conda #
+# THIRD STAGE OF BUILD conda # ---------------------------------------------------------------------------------------------------------
 
 FROM alp_glibc AS alp_glibc_conda
 
@@ -66,7 +65,7 @@ RUN mkdir -p "$CONDA_DIR" && \
     mkdir -p "$CONDA_DIR/locks" && chmod 777 "$CONDA_DIR/locks" && \
     conda update conda && conda config --set auto_update_conda False
 
-# FOURTH STAGE OF BUILD python/jupyter #
+# FOURTH STAGE OF BUILD python/jupyter # -----------------------------------------------------------------------------------------------
 
 FROM alp_glibc_conda
 
