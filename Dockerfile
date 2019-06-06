@@ -78,7 +78,8 @@ MAINTAINER dbye68@gmail.com
 
 # configure conda packages
 RUN conda config --append channels conda-forge && conda install -y numpy pandas geopandas gdal shapely rasterio fiona rasterstats \
-    descartes pySAL xarray scikit-image scikit-learn folium pyproj ipython jupyterlab ipywidgets beakerx tk qgrid cached-property
+    descartes pySAL xarray scikit-image scikit-learn folium pyproj ipython jupyterlab ipywidgets beakerx tk qgrid cached-property \
+    dotmap
 RUN conda update --all && conda clean --all -f -y
 
 RUN pip install gis-metadata-parser pycrsx
