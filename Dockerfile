@@ -59,7 +59,7 @@ COPY --from=data miniconda.sh miniconda.sh
 ENV CONDA_DIR="/opt/conda"
 ENV PATH="$CONDA_DIR/bin:$PATH"
 RUN mkdir -p "$CONDA_DIR" && \
-    bash miniconda.sh -f -b -p "$CONDA_DIR" && \
+    /bin/sh miniconda.sh -f -b -p "$CONDA_DIR" && \
     echo "export PATH=$CONDA_DIR/bin:\$PATH" > /etc/profile.d/conda.sh && \
     rm miniconda.sh && rm -r "$CONDA_DIR/pkgs/" && \
     mkdir -p "$CONDA_DIR/locks" && chmod 777 "$CONDA_DIR/locks" && \
