@@ -18,9 +18,8 @@ RUN GLIBC_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" &
     GLIBC_VER="2.29-r0" && \
     GLIBC_BASE="glibc-$GLIBC_VER.apk" && \
     GLIBC_BIN="glibc-bin-$GLIBC_VER.apk" && \
-    GLIBC_I18N="glibc-i18n-$GLIBC_VER.apk"
-
-RUN wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_BASE" -O glibc_base.apk && \
+    GLIBC_I18N="glibc-i18n-$GLIBC_VER.apk" && \
+    wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_BASE" -O glibc_base.apk && \
     wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_BIN" -O glibc_bin.apk && \
     wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_I18N" -O glibc_i18n.apk 
 
