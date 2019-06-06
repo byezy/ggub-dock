@@ -11,7 +11,7 @@ RUN wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x
 
 FROM scratch AS glibc_files
 # FROM scratch
-ADD rootfs.tar
+ADD rootfs.tar /
 
 # CMD [ "/bin/sh" ]
 ENV GLIBC_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
