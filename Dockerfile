@@ -30,7 +30,7 @@ FROM alpine:latest AS alp_glibc
 # set C.UTF-8 locale as default
 ENV LANG=C.UTF-8
 
-COPY --from=data *.apk
+COPY --from=data *.apk /
 
 # # install GNU libc (aka glibc)
 # RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" && \
