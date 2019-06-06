@@ -6,7 +6,7 @@ ENV CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
 
 # get sample spatial data and conda
 RUN \
-    wget --no-check-certificate -O data.tar.gz https://github.com/byezy/sample-spatial-data/archive/v1.1.tar.gz && \
+    wget https://github.com/byezy/sample-spatial-data/archive/v1.1.tar.gz -O data.tar.gz && \
     tar -xzf data.tar.gz  && rm data.tar.gz && \
     \
     wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
