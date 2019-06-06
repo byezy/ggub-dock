@@ -17,9 +17,9 @@ RUN wget https://github.com/byezy/sample-spatial-data/archive/v1.1.tar.gz -O dat
     wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
     echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c && \
     \
-    wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_BASE" -O glibc_base.apk \
-         "$GLIBC_URL/$GLIBC_VER/$GLIBC_BIN" -O glibc_bin.apk \
-         "$GLIBC_URL/$GLIBC_VER/$GLIBC_I18N" -O glibc_i18n.apk 
+    wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_BASE" -O glibc_base.apk && \
+    wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_BIN" -O glibc_bin.apk && \
+    wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_I18N" -O glibc_i18n.apk 
 
 # SECOND STAGE OF BUILD alpine + glibc # -----------------------------------------------------------------------------------------------
 
