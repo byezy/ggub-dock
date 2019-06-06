@@ -16,7 +16,7 @@ RUN \
     tar -xzf data.tar.gz  && rm data.tar.gz && \
     \
     wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
-    echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c
+    echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c && \
     \
     wget "$GLIBC_URL/$GLIBC_VER/$GLIBC_BASE" -O glibc_base.apk \
          "$GLIBC_URL/$GLIBC_VER/$GLIBC_BIN" -O glibc_bin.apk \
