@@ -9,7 +9,11 @@ ENV CONDA_VERSION="4.6.14" CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
 RUN wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
     echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c
 
-FROM busybox AS glibc_files
+FROM scratch AS glibc_files
+# FROM scratch
+ADD rootfs.tar
+
+# CMD [ "/bin/sh" ]
 ENV GLIBC_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
     GLIBC_VER="2.29-r0" \
     GLIBC_BASE="glibc-$GLIBC_VER.apk" \
