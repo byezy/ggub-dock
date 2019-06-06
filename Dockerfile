@@ -1,23 +1,22 @@
 # FIRST STAGE OF BUILD static data # ---------------------------------------------------------------------------------------------------
 
-FROM busybox AS data
+FROM busybox AS sample_data
+RUN wget https://github.com/byezy/sample-spatial-data/archive/v1.1.tar.gz -O data.tar.gz && \
+    tar -xzf data.tar.gz  && rm data.tar.gz &&
 
-ENV CONDA_VERSION="4.6.14" CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03" \
-    \
-    GLIBC_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
+FROM busybox AS conda_files
+ENV CONDA_VERSION="4.6.14" CONDA_MD5_CHECKSUM="718259965f234088d785cad1fbd7de03"
+RUN wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
+    echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c && \
+
+FROM busybox AS glibc_files
+ENV GLIBC_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
     GLIBC_VER="2.29-r0" \
     GLIBC_BASE="glibc-$GLIBC_VER.apk" \
     GLIBC_BIN="glibc-bin-$GLIBC_VER.apk" \
     GLIBC_I18N="glibc-i18n-$GLIBC_VER.apk"
 
-# get sample spatial data, conda and glibc
-RUN wget https://github.com/byezy/sample-spatial-data/archive/v1.1.tar.gz -O data.tar.gz && \
-    tar -xzf data.tar.gz  && rm data.tar.gz && \
-    \
-    wget "http://repo.continuum.io/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh && \
-    echo "$CONDA_MD5_CHECKSUM  miniconda.sh" | md5sum -c && \
-    \
-    wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_BASE" -O glibc_base.apk && \
+RUN wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_BASE" -O glibc_base.apk && \
     wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_BIN" -O glibc_bin.apk && \
     wget --no-check-certificate "$GLIBC_URL/$GLIBC_VER/$GLIBC_I18N" -O glibc_i18n.apk 
 
@@ -28,7 +27,7 @@ FROM alpine:latest AS alp_glibc
 # set C.UTF-8 locale as default
 ENV LANG=C.UTF-8
 
-COPY --from=data *.apk /
+COPY --from=glibc_files *.apk /
 
 # # install GNU libc (aka glibc)
 # RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" && \
@@ -67,7 +66,7 @@ RUN apk add --no-cache glibc_base.apk glibc_bin.apk glibc_i18n.apk  && \
 
 FROM alp_glibc AS alp_glibc_conda
 
-COPY --from=data miniconda.sh miniconda.sh
+COPY --from=conda_files miniconda.sh miniconda.sh
 
 # install conda
 ENV CONDA_DIR="/opt/conda"
@@ -85,7 +84,7 @@ FROM alp_glibc_conda
 
 MAINTAINER dbye68@gmail.com
 
-COPY --from=data /sample-spatial-data-1.1 /home/ggj/sample_data
+COPY --from=sample_data /sample-spatial-data-1.1 /home/ggj/sample_data
 
 # configure conda packages
 RUN conda config --append channels conda-forge && conda install -y numpy pandas geopandas gdal shapely rasterio fiona rasterstats \
